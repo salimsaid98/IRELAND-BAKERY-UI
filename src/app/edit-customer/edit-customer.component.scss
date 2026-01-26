@@ -1,0 +1,66 @@
+// Add Customer Card Styling
+.add-customer-card {
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  margin: 16px;
+  
+  .card-title-custom {
+    color: #333;
+    font-weight: 600;
+    font-size: 18px;
+  }
+  
+  ion-card-header {
+    background: transparent;
+    border-bottom: 2px solid rgba(0, 0, 0, 0.1);
+  }
+}
+// Add Customer Form
+.add-customer-form {
+  gap: 12px;
+  
+  ion-item {
+    --background: white;
+    --border-radius: 8px;
+    margin-bottom: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    
+    ion-label {
+      color: #667eea;
+      font-weight: 500;
+    }
+    
+    ion-input {
+      --padding-start: 12px;
+      --padding-end: 12px;
+    }
+  }
+}
+
+// Add Button
+.add-btn-col {
+  display: flex;
+  align-items: flex-end;
+  
+  .add-btn {
+    --background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    --border-radius: 8px;
+    font-weight: 600;
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+    
+    &:hover:not([disabled]) {
+      box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+    }
+    
+    &[disabled] {
+      opacity: 0.6;
+    }
+  }
+}
+
+// Customers Container
+.customers-container {
+  padding-top: 16px;
+  padding-bottom: 32px;
+}

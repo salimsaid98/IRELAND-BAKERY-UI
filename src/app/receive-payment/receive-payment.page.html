@@ -1,0 +1,76 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/home"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Receive Payment</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <!-- Customer Info -->
+  <!-- Customer Header Card -->
+  <ion-card class="customer-header-card">
+    <div class="customer-header-bg"></div>
+    <div class="customer-profile">
+      <div class="profile-avatar">
+        {{ customer.customer_name ? customer.customer_name.charAt(0).toUpperCase() : '' }}
+      </div>
+      <div class="profile-info">
+        <h1 class="customer-name-header">{{ customer.customer_name }}</h1>
+        <p class="customer-id">ID: {{ customer.customer_id }}</p>
+      </div>
+    </div>
+  </ion-card>
+  <!-- Payment Form -->
+  <form   [formGroup]="paymentForm">
+    <!-- Amount Input -->
+    <ion-item>
+      <ion-label position="floating">Amount</ion-label>
+      <ion-input 
+        type="number" 
+        formControlName="amount"
+        placeholder="0.00"
+        inputmode="decimal">
+      </ion-input>
+      <ion-icon name="cash" slot="start"></ion-icon>
+    </ion-item>
+
+    <!-- Payment Method -->
+    <ion-item>
+      <ion-label>Payment Method</ion-label>
+      <ion-select formControlName="payment_method" placeholder="Select method">
+        <ion-select-option value="cash">Cash</ion-select-option>
+        <ion-select-option value="card">Card</ion-select-option>
+        <ion-select-option value="bank">Bank Transfer</ion-select-option>
+      </ion-select>
+    </ion-item>
+
+    <!-- Reference/Notes -->
+    <ion-item>
+      <ion-label position="floating">Reference/Notes</ion-label>
+      <ion-textarea 
+        formControlName="notes"
+        placeholder="Add payment reference...">
+      </ion-textarea>
+    </ion-item>
+
+    <!-- Submit Button -->
+    <ion-button 
+      expand="block" 
+      color="primary"
+      (click)="submitPayment()"
+      [disabled]="!paymentForm.valid"
+      class="ion-margin-top">
+      Confirm Payment
+    </ion-button>
+
+    <ion-button 
+      expand="block" 
+      color="medium"
+      fill="outline"
+      routerLink="/home">
+      Cancel
+    </ion-button>
+  </form>
+</ion-content>

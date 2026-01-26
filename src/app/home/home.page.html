@@ -1,0 +1,209 @@
+<ion-header [translucent]="true">
+  <ion-toolbar color="primary">
+    <ion-title>Shop</ion-title>
+    <ion-buttons slot="end">
+      <ion-badge color="danger" *ngIf="cartItems.length > 0">{{ cartItems.length }}</ion-badge>
+      <ion-button (click)="openCart()">
+        <ion-icon name="cart" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <!-- Search and Filter Bar -->
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-searchbar 
+        [(ngModel)]="searchText" 
+        placeholder="Search products..."
+        (ionInput)="filterProducts()">
+      </ion-searchbar>
+    </ion-toolbar>
+  </ion-header>
+
+  <!-- Products Grid -->
+  <ion-grid class="products-grid">
+    <ion-row>
+      <ion-col size="12" sizeMd="6" sizeLg="4" *ngFor="let product of filteredProducts">
+        <ion-card class="product-card">
+          <!-- Product Image -->
+          <!-- <ion-card-header class="product-image-container">
+            <img [src]="product.image" [alt]="product.name" class="product-image"> -->
+            <!-- <ion-chip color="success" *ngIf="product.inStock" class="stock-badge">In Stock</ion-chip> -->
+            <!-- <ion-chip color="warning" *ngIf="!product.inStock" class="stock-badge">Out of Stock</ion-chip> -->
+          <!-- </ion-card-header> -->
+
+          <!-- Product Details -->
+          <ion-card-content class="product-details">
+            <h2 class="product-name">{{ product.name }}</h2>
+            <p class="product-description">{{ product.description }}</p>
+            
+            <!-- Rating -->
+            <!-- <ion-row class="rating-row">
+              <ion-col>
+                <div class="rating">
+                  <ion-icon name="star" color="warning" *ngFor="let star of [1,2,3,4,5]; let i = index" [class.filled]="i < product.rating"></ion-icon>
+                  <span class="rating-text">({{ product.rating }}/5)</span>
+                </div>
+              </ion-col>
+            </ion-row> -->
+
+            <!-- Price -->
+            <ion-row class="price-row">
+              <ion-col>
+                <div class="price-container">
+                  <span class="original-price" *ngIf="product.originalPrice">Tsh {{ product.originalPrice }}</span>
+                  <span class="current-price">Tsh {{ product.price }}</span>
+                  <!-- <span class="discount" *ngIf="product.originalPrice">
+                    -{{ ((product.originalPrice - product.price) / product.originalPrice * 100) | number:'1.0-0' }}%
+                  </span> -->
+                </div>
+              </ion-col>
+            </ion-row>
+
+            <!-- Quantity Selector -->
+            <ion-row class="quantity-row">
+              <ion-col>
+                <div class="quantity-selector">
+                  <ion-button size="small" fill="outline" (click)="decreaseQuantity(product)" [disabled]="product.quantity <= 0">
+                    <ion-icon name="remove" slot="icon-only"></ion-icon>
+                  </ion-button>
+                  <input type="number" class="quantity-input" [(ngModel)]="product.quantity" min="0" (change)="validateQuantity(product)">
+                  <ion-button size="small" fill="outline" (click)="increaseQuantity(product)" [disabled]="!product.inStock">
+                    <ion-icon name="add" slot="icon-only"></ion-icon>
+                  </ion-button>
+                </div>
+              </ion-col>
+            </ion-row>
+
+            <!-- Add to Cart Button -->
+            <ion-row>
+              <ion-col>
+                <ion-button 
+                  expand="block" 
+                  color="primary"
+                  (click)="addToCart(product)"
+                  [disabled]="product.quantity <= 0 || !product.inStock"
+                  class="add-to-cart-btn">
+                  <ion-icon name="cart-outline" slot="start"></ion-icon>
+                  Add to Cart
+                </ion-button>
+              </ion-col>
+            </ion-row>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <!-- Empty State -->
+  <div *ngIf="filteredProducts.length === 0" class="empty-state">
+    <ion-icon name="search"></ion-icon>
+    <h2>No Products Found</h2>
+    <p>Try adjusting your search</p>
+  </div>
+</ion-content>
+
+<!-- Cart Modal -->
+<ion-modal #cartModal [isOpen]="isCartOpen" (didDismiss)="closeCart()">
+  <ng-template>
+    <ion-header>
+      <ion-toolbar color="primary">
+        <ion-title>Shopping Cart</ion-title>
+        <ion-buttons slot="end">
+          <ion-button (click)="closeCart()">Close</ion-button>
+        </ion-buttons>
+      </ion-toolbar>
+    </ion-header>
+
+    <ion-content>
+      <!-- Cart Items List -->
+      <div *ngIf="cartItems.length > 0; else emptyCart">
+        <ion-list>
+          <ion-item-sliding *ngFor="let item of cartItems; let i = index">
+            <ion-item class="cart-item">
+              <!-- <ion-thumbnail slot="start">
+                <img [src]="item.image" [alt]="item.name">
+              </ion-thumbnail> -->
+              <ion-label>
+                <h2 class="cart-item-name">{{ item.name }}</h2>
+                <p class="cart-item-price">Tsh {{ item.price }}</p>
+                
+                <!-- Quantity Controls in Cart -->
+                <div class="cart-quantity-controls">
+                  <ion-button size="small" fill="outline" (click)="decreaseCartQuantity(i)">
+                    <ion-icon name="remove" slot="icon-only"></ion-icon>
+                  </ion-button>
+                  <span class="cart-qty-display">{{ item.quantity }}</span>
+                  <ion-button size="small" fill="outline" (click)="increaseCartQuantity(i)">
+                    <ion-icon name="add" slot="icon-only"></ion-icon>
+                  </ion-button>
+                </div>
+              </ion-label>
+              <div class="cart-item-actions">
+                <div class="cart-item-total">Tsh {{ item.price * item.quantity }}</div>
+                <ion-button 
+                  size="small" 
+                  fill="clear" 
+                  color="danger"
+                  (click)="removeFromCart(i)"
+                  class="delete-btn">
+                  <ion-icon name="close-circle" slot="icon-only"></ion-icon>
+                </ion-button>
+              </div>
+            </ion-item>
+
+            <!-- Swipe to Delete -->
+            <ion-item-options side="end">
+              <ion-item-option color="danger" (click)="removeFromCart(i)">
+                <ion-icon name="trash" slot="icon-only"></ion-icon>
+              </ion-item-option>
+            </ion-item-options>
+          </ion-item-sliding>
+        </ion-list>
+
+        <!-- Cart Summary -->
+        <ion-card class="cart-summary">
+          <ion-card-content>
+            <ion-row class="summary-row">
+              <ion-col>Subtotal:</ion-col>
+              <ion-col class="summary-value">Tsh {{ cartSubtotal | number:'1.2-2' }}</ion-col>
+            </ion-row>
+            <ion-row class="summary-row">
+              <ion-col>Tax (0%):</ion-col>
+              <ion-col class="summary-value">Tsh {{ cartTax | number:'1.2-2' }}</ion-col>
+            </ion-row>
+            <ion-row class="summary-row total-row">
+              <ion-col>Total:</ion-col>
+              <ion-col class="summary-value total-amount">Tsh {{ cartTotal | number:'1.2-2' }}</ion-col>
+            </ion-row>
+          </ion-card-content>
+        </ion-card>
+
+        <!-- Checkout Button -->
+        <div class="checkout-actions">
+          <ion-button expand="block" color="success" class="checkout-btn" (click)="proceedToCheckout()">
+            <ion-icon name="card" slot="start"></ion-icon>
+            Proceed to Checkout
+          </ion-button>
+          <ion-button expand="block" fill="outline" (click)="closeCart()" class="continue-shopping-btn">
+            Continue Shopping
+          </ion-button>
+        </div>
+      </div>
+
+      <!-- Empty Cart -->
+      <ng-template #emptyCart>
+        <div class="empty-cart-container">
+          <ion-icon name="cart"></ion-icon>
+          <h2>Your Cart is Empty</h2>
+          <p>Add some products to get started</p>
+          <ion-button expand="block" color="primary" (click)="closeCart()">
+            Start Shopping
+          </ion-button>
+        </div>
+      </ng-template>
+    </ion-content>
+  </ng-template>
+</ion-modal>

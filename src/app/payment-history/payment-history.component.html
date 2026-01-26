@@ -1,0 +1,70 @@
+<ion-header [translucent]="true">
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/auth/customer_list"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Payment History</ion-title>
+    <ion-buttons slot="end">
+      <!-- <ion-button (click)="editCustomer()">
+        <ion-icon name="pencil" slot="icon-only"></ion-icon>
+      </ion-button> -->
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+>
+
+
+
+
+  <!-- Orders List Section -->
+  <div class="orders-section">
+    <ion-card-header class="section-header">
+      <ion-card-title class="section-title">Payment History</ion-card-title>
+      <ion-badge color="primary" *ngIf="payments.length > 0">{{ payments.length }}</ion-badge>
+    </ion-card-header>
+
+    <!-- Orders List -->
+    <div class="orders-container" *ngIf="payments.length > 0; else noOrders">
+      <ion-list class="orders-list">
+        <ion-item-group *ngFor="let payment of payments; let i = index">
+          <ion-item class="order-item" [detail]="true" (click)="viewOrderDetails(payment)" button="true">
+            <ion-label class="order-label">
+              <div class="order-header">
+                <!-- <h3 class="order-id">Payment : method #{{ payment.payment_method }}</h3> -->
+                <h3 class="order-id">Paid on {{payment.payment_date | date: 'MMM dd, yyyy'}}</h3>
+                <span class="order-date">Payment Method {{  payment.payment_method  }}</span>
+              </div>
+              <div class="order-details">
+                <!-- <p class="order-items">Items: {{ order.items }} qty</p>
+                <p class="order-status" [ngClass]="'status-' + order.status">
+                  {{ order.status | uppercase }}
+                </p> -->
+              </div>
+            </ion-label>
+            <div class="order-amount" slot="end">
+              <div class="amount-value">{{ payment.amount | currency:'TZS':'':'1.0-0' }} TZS</div>
+               <!-- Balance: {{ customer.customer_balance | currency:'TZS':'':'1.0-0' }} TZS -->
+            </div>
+          </ion-item>
+        </ion-item-group>
+      </ion-list>
+    </div>
+
+    <!-- Empty Orders State -->
+    <ng-template #noOrders>
+      <ion-card class="empty-orders-card">
+        <ion-card-content class="empty-content">
+          <ion-icon name="bag-outline" class="empty-icon"></ion-icon>
+          <h2>No Cash Yet</h2>
+          <!-- <p>This customer hasn't placed any orders. Click "New Order" to create one.</p> -->
+          <ion-button color="primary" (click)="createOrder()">
+            <ion-icon name="add-circle" slot="start"></ion-icon>
+            Create First Order
+          </ion-button>
+        </ion-card-content>
+      </ion-card>
+    </ng-template>
+  </div>
+</ion-content>

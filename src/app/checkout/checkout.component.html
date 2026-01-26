@@ -1,0 +1,257 @@
+<ion-header [translucent]="true">
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-button (click)="goBack()">
+        <ion-icon name="arrow-back" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>Checkout</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <!-- Order Summary Section -->
+  <ion-card class="order-summary">
+    <ion-card-header>
+      <ion-card-title>Order Summary</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <!-- Cart Items -->
+      <div class="cart-items-list">
+        <div class="cart-item-summary" *ngFor="let item of cartItems">
+          <div class="item-info">
+            <h3>{{ item.name }}</h3>
+            <p>tsh {{ item.price }} x {{ item.quantity }}</p>
+          </div>
+          <div class="item-subtotal">tsh {{ item.price * item.quantity }}</div>
+        </div>
+      </div>
+
+      <!-- Totals -->
+      <ion-row class="totals-section">
+        <ion-col>
+          <div class="total-row">
+            <span>Subtotal:</span>
+            <span class="amount">tsh {{ cartSubtotal | number: '1.2-2' }}</span>
+          </div>
+          <div class="total-row">
+            <span>Tax (0%):</span>
+            <span class="amount">tsh{{ cartTax | number: '1.2-2' }}</span>
+          </div>
+          <div class="total-row grand-total">
+            <span>Total:</span>
+            <span class="amount">tsh {{ cartTotal | number: '1.2-2' }}</span>
+          </div>
+        </ion-col>
+      </ion-row>
+    </ion-card-content>
+  
+  </ion-card>
+
+  <!-- Payment Method Selection -->
+<!-- Payment Method Selection -->
+<ion-card class="payment-section">
+  <ion-card-header>
+    <ion-card-title>Payment Method</ion-card-title>
+  </ion-card-header>
+  <ion-card-content>
+    <ion-radio-group [(ngModel)]="paymentMethod">
+      <!-- Cash Payment -->
+      <div class="payment-option">
+        <ion-item lines="none">
+          <ion-label>
+            <ion-icon name="cash" color="success"></ion-icon>
+            <span class="payment-label">Cash Payment</span>
+          </ion-label>
+          <ion-radio
+            slot="start"
+            value="cash"
+            (ionSelect)="onPaymentMethodChange('cash')">
+          </ion-radio>
+        </ion-item>
+      </div>
+
+      <!-- Credit Payment -->
+      <div class="payment-option">
+        <ion-item lines="none">
+          <ion-label>
+            <ion-icon name="card" color="primary"></ion-icon>
+            <span class="payment-label">Credit Payment</span>
+          </ion-label>
+          <ion-radio
+            slot="start"
+            value="credit"
+            (ionSelect)="onPaymentMethodChange('credit')">
+          </ion-radio>
+        </ion-item>
+      </div>
+    </ion-radio-group>
+    <!-- ...existing code... -->
+  </ion-card-content>
+</ion-card>
+
+<!-- Customer Selection Section (for Credit Payment) -->
+<ion-card class="customer-section" *ngIf="paymentMethod === 'credit'">
+  <ion-card-header>
+    <ion-card-title>Select Customer</ion-card-title>
+  </ion-card-header>
+  <ion-card-content>
+    <ion-item>
+      <ion-label position="floating">Customer</ion-label>
+      <ion-select 
+        [(ngModel)]="selectedCustomer"
+        (ionChange)="selectCustomer($event.detail.value)">
+        <ion-select-option *ngFor="let customer of customers" [value]="customer.id">
+          {{ customer.name }} - {{ customer.phone }}
+        </ion-select-option>
+      </ion-select>
+    </ion-item>
+
+    <ion-button 
+      expand="block" 
+      fill="outline" 
+      color="primary"
+      (click)="openAddCustomerModal()"
+      class="add-customer-btn">
+      <ion-icon name="add" slot="start"></ion-icon>
+      Add New Customer
+    </ion-button>
+
+    <!-- Display Selected Customer Info -->
+    <div class="selected-customer-info" *ngIf="selectedCustomer">
+      <ion-card>
+        <ion-card-content>
+          <p><strong>Name:</strong> {{ selectedCustomer.name }}</p>
+          <p><strong>Phone:</strong> {{ selectedCustomer.phone }}</p>
+          <!-- <p><strong>Email:</strong> {{ selectedCustomer.email }}</p>
+          <p><strong>Address:</strong> {{ selectedCustomer.address }}</p> -->
+        </ion-card-content>
+      </ion-card>
+    </div>
+  </ion-card-content>
+</ion-card>
+
+  <!-- Notes Section -->
+  <!-- <ion-card class="notes-section">
+    <ion-card-header>
+      <ion-card-title>Order Notes</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-textarea
+        formControlName="notes"
+        placeholder="Add any special notes or instructions..."
+        rows="4">
+      </ion-textarea>
+    </ion-card-content>
+  </ion-card> -->
+
+  <!-- Action Buttons -->
+  <div class="action-buttons">
+    <ion-button expand="block" fill="outline" (click)="goBack()">
+      Cancel
+    </ion-button>
+    <ion-button
+      expand="block"
+      color="success"
+      (click)="completeCheckout()"
+      [disabled]="isProcessing || cartItems.length === 0">
+      <ion-icon name="checkmark-circle" slot="start"></ion-icon>
+      Complete Order
+    </ion-button>
+  </div>
+
+  
+</ion-content>
+
+
+<!-- Add Customer Modal -->
+<ion-modal #addCustomerModal (didDismiss)="closeAddCustomerModal()">
+  <ng-template>
+    <ion-header>
+      <ion-toolbar color="primary">
+        <ion-title>Add New Customer</ion-title>
+        <ion-buttons slot="end">
+          <ion-button (click)="closeAddCustomerModal()">Close</ion-button>
+        </ion-buttons>
+      </ion-toolbar>
+    </ion-header>
+
+    <ion-content>
+      <form [formGroup]="customerForm" class="customer-form">
+        <ion-item>
+          <ion-label position="floating">Full Name</ion-label>
+          <ion-input
+            formControlName="customer_name"
+            type="text"
+            placeholder="Enter full name">
+          </ion-input>
+        </ion-item>
+        <ion-text
+          color="danger"
+          *ngIf="customerForm.get('customer_name')?.invalid && customerForm.get('customer_name')?.touched">
+          <p class="error-text">Name is required (min 2 characters)</p>
+        </ion-text>
+
+        <ion-item>
+          <ion-label position="floating">Phone Number</ion-label>
+          <ion-input
+            formControlName="customer_phone"
+            type="tel"
+            placeholder="Enter phone number">
+          </ion-input>
+        </ion-item>
+        <ion-text
+          color="danger"
+          *ngIf="customerForm.get('customer_phone')?.invalid && customerForm.get('customer_phone')?.touched">
+          <p class="error-text">Valid phone number is required</p>
+        </ion-text>
+
+        <!-- <ion-item>
+          <ion-label position="floating">Email Address</ion-label>
+          <ion-input
+            formControlName="email"
+            type="email"
+            placeholder="Enter email">
+          </ion-input>
+        </ion-item> -->
+        <!-- <ion-text
+          color="danger"
+          *ngIf="customerForm.get('email')?.invalid && customerForm.get('email')?.touched">
+          <p class="error-text">Valid email is required</p>
+        </ion-text> -->
+
+        <ion-item>
+          <ion-label position="floating">Balance</ion-label>
+          <ion-input
+            formControlName="customer_balance"
+            type="number"
+            placeholder="Enter balance"
+            rows="3"
+            value="0">
+          </ion-input>
+        </ion-item>
+        <ion-text
+          color="danger"
+          *ngIf="customerForm.get('customer_balance')?.invalid && customerForm.get('customer_balance')?.touched">
+          <p class="error-text">Balance is required</p>
+        </ion-text>
+
+        <div class="form-actions">
+          <ion-button
+            expand="block"
+            fill="outline"
+            (click)="closeAddCustomerModal()">
+            Cancel
+          </ion-button>
+          <ion-button
+            expand="block"
+            color="success"
+            (click)="addNewCustomer()"
+            [disabled]="customerForm.invalid">
+            Add Customer
+          </ion-button>
+        </div>
+      </form>
+    </ion-content>
+  </ng-template>
+</ion-modal>

@@ -1,0 +1,75 @@
+<ion-header [translucent]="true">
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/auth/customer"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Edit Customers</ion-title>
+    <ion-buttons slot="end">
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <!-- Search Bar - Prominent Position -->
+   
+      <!-- Add Customer Card -->
+      <ion-card class="add-customer-card">
+        <ion-card-header>
+          <ion-card-title class="card-title-custom">Edit Customer</ion-card-title>
+        </ion-card-header>
+        <ion-card-content>
+          <ion-grid fixed="true">
+            <ion-row class="add-customer-form">
+              <ion-col size="12" sizeSm="6" sizeMd="4">
+                <ion-item>
+                  <ion-label position="floating">Customer Name</ion-label>
+                  <ion-input 
+                    [(ngModel)]="CustomerData.customer_name" 
+                    placeholder="Enter name"
+                    clearInput="true">
+                  </ion-input>
+                </ion-item>
+              </ion-col>
+              <ion-col size="12" sizeSm="6" sizeMd="4">
+                <ion-item>
+                  <ion-label position="floating">Phone Number</ion-label>
+                  <ion-input 
+                    [(ngModel)]="CustomerData.customer_phone" 
+                    placeholder="+255..."
+                    type="tel"
+                    clearInput="true">
+                  </ion-input>
+                </ion-item>
+              </ion-col>
+              <ion-col size="12" sizeSm="6" sizeMd="4">
+                <ion-item>
+                  <ion-label position="floating">Balance </ion-label>
+                  <ion-input 
+                    [(ngModel)]="CustomerData.customer_balance" 
+                    placeholder="Balance"
+                    type="number"
+                    clearInput="true">
+                  </ion-input>
+                </ion-item>
+              </ion-col>
+              <ion-col size="12" sizeMd="4" class="add-btn-col">
+                <ion-button 
+                  expand="block" 
+                  color="success"
+                  (click)="addCustomer()"
+                  
+
+                  class="add-btn">
+                  <ion-icon name="person-add" slot="start"></ion-icon>
+                  Update Customer
+                </ion-button>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </ion-card-content>
+      </ion-card>
+
+  
+
+</ion-content>
+

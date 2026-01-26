@@ -1,0 +1,309 @@
+/* =========================
+   GLOBAL
+========================= */
+ion-content {
+  --background: #f4f6f9;
+}
+
+.section-title {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #222;
+}
+
+/* =========================
+   HEADER CARD
+========================= */
+.order-header-card {
+  margin: 16px;
+  border-radius: 16px;
+  overflow: hidden;
+  position: relative;
+  background: linear-gradient(135deg, #4f46e5, #6366f1);
+  color: #fff;
+}
+
+.order-header-bg {
+  position: absolute;
+  inset: 0;
+  opacity: 0.15;
+  background-image: radial-gradient(circle at top right, #fff, transparent 60%);
+}
+
+.order-info {
+  position: relative;
+  padding: 20px;
+}
+
+.order-id-badge {
+  display: inline-block;
+  background: rgba(255, 255, 255, 0.2);
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.order-title {
+  margin: 0;
+  font-size: 1.3rem;
+  font-weight: 700;
+}
+
+.order-date {
+  margin-top: 4px;
+  font-size: 0.85rem;
+  opacity: 0.9;
+}
+
+/* =========================
+   STATUS CARD
+========================= */
+.status-card {
+  margin: 16px;
+  border-radius: 14px;
+}
+
+.status-container {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.status-badge {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #fff;
+}
+
+.status-completed {
+  background: #16a34a;
+}
+
+.status-pending {
+  background: #f59e0b;
+}
+
+.status-cancelled {
+  background: #dc2626;
+}
+
+.status-label {
+  font-size: 0.75rem;
+  color: #666;
+  margin: 0;
+}
+
+.status-description {
+  font-size: 0.85rem;
+  font-weight: 500;
+  margin: 2px 0 0;
+}
+
+/* =========================
+   INFO CARDS
+========================= */
+.info-card,
+.items-card,
+.summary-card,
+.notes-card {
+  margin: 16px;
+  border-radius: 14px;
+}
+
+.info-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.info-item:last-child {
+  margin-bottom: 0;
+}
+
+.info-icon {
+  font-size: 1.2rem;
+  color: #4f46e5;
+}
+
+.info-label {
+  font-size: 0.75rem;
+  color: #777;
+  margin: 0;
+}
+
+.info-value {
+  font-size: 0.95rem;
+  font-weight: 600;
+  margin: 2px 0 0;
+}
+
+/* =========================
+   ORDER ITEMS
+========================= */
+.items-content {
+  padding-top: 8px;
+}
+
+.order-item-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 0;
+  border-bottom: 1px dashed #e5e7eb;
+}
+
+.order-item-row:last-child {
+  border-bottom: none;
+}
+
+.item-info {
+  flex: 1;
+}
+
+.item-name {
+  font-size: 0.95rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+.item-sku {
+  font-size: 0.75rem;
+  color: #6b7280;
+}
+
+.qty-badge {
+  background: #eef2ff;
+  color: #4338ca;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 0.75rem;
+}
+
+.item-price {
+  text-align: right;
+}
+
+.unit-price {
+  font-size: 0.75rem;
+  color: #6b7280;
+  margin: 0;
+}
+
+.total-price {
+  font-size: 0.95rem;
+  font-weight: 700;
+  margin: 2px 0 0;
+}
+
+/* =========================
+   SUMMARY
+========================= */
+.summary-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 8px;
+  font-size: 0.9rem;
+}
+
+.summary-row.total {
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.summary-label {
+  color: #6b7280;
+}
+
+.summary-value {
+  font-weight: 600;
+}
+
+.summary-value.discount {
+  color: #dc2626;
+}
+
+hr {
+  border: none;
+  border-top: 1px dashed #e5e7eb;
+  margin: 12px 0;
+}
+
+/* =========================
+   NOTES
+========================= */
+.notes-text {
+  font-size: 0.9rem;
+  line-height: 1.4;
+  color: #374151;
+}
+
+/* =========================
+   ACTION BUTTONS
+========================= */
+.action-buttons-grid {
+  margin: 20px 16px 30px;
+}
+
+ion-button {
+  --border-radius: 12px;
+  font-weight: 600;
+}
+
+.order-item-row {
+  border-bottom: 1px dashed #e0e0e0;
+  padding: 10px 0;
+}
+
+.qty-badge {
+  background: var(--ion-color-primary);
+  color: #fff;
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 12px;
+}
+.item-price {
+  text-align: right;
+}
+.unit-price {
+  font-size: 0.75rem;
+  color: #6b7280;
+  margin: 0;
+}
+
+.order-item-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 0;
+  border-bottom: 1px dashed #e0e0e0;
+}
+
+.item-info {
+  flex: 2;
+}
+
+.item-qty {
+  flex: 1;
+  text-align: center;
+}
+
+ion-badge {
+  font-size: 14px;
+  padding: 6px 10px;
+  border-radius: 12px;
+}
+
+.item-pricing {
+  flex: 2;
+  text-align: right;
+  font-weight: 600;
+}

@@ -1,0 +1,70 @@
+<ion-content class="login-page" fullscreen>
+
+  <!-- Gradient background -->
+  <div class="background-gradient"></div>
+
+  <div class="login-container">
+
+    <!-- App Logo -->
+    <div class="logo-wrapper">
+      <img src="assets/icon/favicon.png" alt="App Logo">
+      <h1>Welcome Back</h1>
+      <p>Login to access your account</p>
+    </div>
+
+    <!-- Login Card -->
+    <ion-card class="login-card">
+      <ion-card-content>
+
+          <ion-item>
+          <ion-label position="floating">Email</ion-label>
+          <ion-input #emailInput type="email" [(ngModel)]="email"></ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-label position="floating">Password</ion-label>
+          <ion-input #passwordInput type="password" [(ngModel)]="password"></ion-input>
+        </ion-item>
+
+        <!-- Login Button -->
+        <ion-button expand="block" color="primary" (click)="login()" class="login-btn">
+          <span>Login</span>
+        </ion-button>
+
+        <!-- Forgot Password -->
+        <div class="forgot-pass">
+          <ion-button fill="clear" size="small" color="medium" routerLink="/auth/forgot-password">
+            Forgot Password?
+          </ion-button>
+        </div>
+
+        <!-- Divider -->
+        <div class="divider">
+          <span>OR</span>
+        </div>
+
+        <!-- Social Login -->
+        <div class="social-login">
+          <ion-button expand="block" color="tertiary">
+            <ion-icon slot="start" name="logo-google"></ion-icon>
+            Login with Google
+          </ion-button>
+          <ion-button expand="block" color="dark">
+            <ion-icon slot="start" name="logo-facebook"></ion-icon>
+            Login with Facebook
+          </ion-button>
+        </div>
+
+      </ion-card-content>
+    </ion-card>
+
+    <!-- Signup Link -->
+    <div class="signup-link">
+      <p>Don't have an account? 
+        <ion-button fill="clear" size="small" color="primary" routerLink="/auth/register">Sign Up</ion-button>
+      </p>
+    </div>
+
+  </div>
+
+</ion-content>

@@ -1,0 +1,145 @@
+<ion-header [translucent]="true">
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/auth/customer"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Customers</ion-title>
+    <ion-buttons slot="end">
+      <ion-badge color="danger" *ngIf="customers.length > 0" class="customer-count">{{ customers.length }}</ion-badge>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <!-- Search Bar - Prominent Position -->
+  <div class="search-container">
+    <ion-searchbar 
+      [(ngModel)]="searchText" 
+      placeholder="🔍 Search by name or phone..."
+      (ionInput)="filterCustomers()"
+      class="search-bar"
+      debounce="300">
+    </ion-searchbar>
+  </div>
+
+  <!-- Add Customer Card -->
+  <!-- <ion-card class="add-customer-card">
+    <ion-card-header>
+      <ion-card-title class="card-title-custom">Add New Customer</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-grid fixed="true">
+        <ion-row class="add-customer-form">
+          <ion-col size="12" sizeSm="6" sizeMd="4">
+            <ion-item>
+              <ion-label position="floating">Customer Name</ion-label>
+              <ion-input 
+                [(ngModel)]="UpdateCustomer.customer_name" 
+                placeholder="Enter name"
+                clearInput="true">
+              </ion-input>
+            </ion-item>
+          </ion-col>
+          <ion-col size="12" sizeSm="6" sizeMd="4">
+            <ion-item>
+              <ion-label position="floating">Phone Number</ion-label>
+              <ion-input 
+                [(ngModel)]="UpdateCustomer.customer_phone" 
+                placeholder="+255..."
+                type="tel"
+                clearInput="true">
+              </ion-input>
+            </ion-item>
+          </ion-col>
+          <ion-col size="12" sizeSm="6" sizeMd="4">
+            <ion-item>
+              <ion-label position="floating">Balance </ion-label>
+              <ion-input 
+                [(ngModel)]="UpdateCustomer.customer_balance" 
+                placeholder="+255..."
+                type="tel"
+                clearInput="true">
+              </ion-input>
+            </ion-item>
+          </ion-col>
+          <ion-col size="12" sizeMd="4" class="add-btn-col">
+            <ion-button 
+              expand="block" 
+              color="success"
+              (click)="addCustomer()"
+              [disabled]="UpdateCustomer.customer_name || UpdateCustomer.customer_phone"
+              class="add-btn">
+              <ion-icon name="person-add" slot="start"></ion-icon>
+              Add Customer
+            </ion-button>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-card-content>
+  </ion-card> -->
+
+  <!-- Customers List -->
+  <div class="customers-container" *ngIf="filteredCustomers.length > 0; else noCustomers">
+    <ion-list class="customers-list">
+      <ion-item-group *ngFor="let customer of customers ; let i = index">
+        <ion-item-divider *ngIf="i === 0" sticky class="list-header">
+          <ion-label><strong>Customer Directory</strong></ion-label>
+        </ion-item-divider>
+        
+        <ion-item class="customer-item" (click)="viewCustomer(customer)" button="true" detail="true">
+          <ion-avatar slot="start" class="customer-avatar">
+            <div class="avatar-placeholder">{{ customer.customer_name.charAt(0).toUpperCase() }}</div>
+          </ion-avatar>
+          <ion-label class="customer-label">
+            <h2 class="customer-name">{{ customer.customer_name }}</h2>
+            <p class="customer-phone">{{ customer.customer_phone }}</p>
+            <!-- <p class="customer-meta" *ngIf="customer.customer_balance !== undefined">
+              Balance: {{ customer.currentbalance| currency:'TZS':'':'1.0-0' }} TZS
+            </p> -->
+             <!-- <p class="customer-meta" *ngIf="customer.customer_balance !== undefined">
+              Owing: {{ customer.currentbalance | currency:'TZS':'':'1.0-0' }} TZS
+            </p> -->
+          </ion-label>
+          <ion-buttons slot="end" class="action-buttons">
+            <ion-button 
+              fill="clear" 
+              color="primary"
+              (click)="editCustomer(customer); $event.stopPropagation()">edit
+              <ion-icon name="pencil-outline"></ion-icon>
+            </ion-button>
+            <ion-button 
+              fill="clear" 
+              color="danger"
+              (click)="deleteCustomer(customer); $event.stopPropagation()">
+              <ion-icon name="trash"></ion-icon>
+            </ion-button>
+          </ion-buttons>
+        </ion-item>
+      </ion-item-group>
+    </ion-list>
+  </div>
+
+  <!-- Empty State -->
+  <ng-template #noCustomers>
+    <ion-card class="empty-state-card">
+      <ion-card-content class="empty-state-content">
+        <div class="empty-icon">
+          <ion-icon name="person-outline"></ion-icon>
+        </div>
+        <h2>No Customers Yet</h2>
+        <p>Start by adding your first customer using the form above.</p>
+      </ion-card-content>
+    </ion-card>
+  </ng-template>
+
+  <!-- Loading State -->
+  <ion-card *ngIf="isLoading" class="loading-card">
+    <ion-card-content class="loading-content">
+      <ion-spinner name="circular"></ion-spinner>
+      <p>Loading customers...</p>
+    </ion-card-content>
+  </ion-card>
+</ion-content>
+
+
+

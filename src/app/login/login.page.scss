@@ -1,0 +1,114 @@
+.login-page {
+  position: relative;
+  --ion-background-color: transparent;
+
+  .background-gradient {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #0054e9, #0163aa);
+    z-index: -1;
+  }
+
+  .login-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem 1rem;
+    min-height: 100vh;
+  }
+
+  .logo-wrapper {
+    text-align: center;
+    margin-bottom: 2rem;
+    color: #fff;
+
+    img {
+      width: 80px;
+      height: 80px;
+      margin-bottom: 0.5rem;
+    }
+
+    h1 {
+      font-size: 2rem;
+      font-weight: 700;
+      margin-bottom: 0.3rem;
+    }
+
+    p {
+      font-size: 0.95rem;
+      color: rgba(255, 255, 255, 0.85);
+    }
+  }
+
+  .login-card {
+    width: 100%;
+    max-width: 400px;
+    border-radius: 20px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+    padding: 2rem;
+    background: #fff;
+
+    .input-item {
+      margin-bottom: 1.3rem;
+
+      ion-label ion-icon {
+        margin-right: 0.5rem;
+        color: #0054e9;
+      }
+    }
+
+    .login-btn {
+      margin-top: 1rem;
+      font-weight: 600;
+      --background: #0054e9;
+      --background-activated: #003fb3;
+      --background-focused: #004acd;
+      --background-hover: #004acd;
+      transition: all 0.3s ease;
+    }
+
+    .forgot-pass {
+      text-align: right;
+      margin-top: 0.5rem;
+    }
+
+    .divider {
+      text-align: center;
+      margin: 1.5rem 0;
+      position: relative;
+      font-size: 0.85rem;
+      color: #6c757d;
+
+      &::before,
+      &::after {
+        content: "";
+        height: 1px;
+        width: 40%;
+        background: #ced4da;
+        position: absolute;
+        top: 50%;
+      }
+      &::before { left: 0; }
+      &::after { right: 0; }
+    }
+
+    .social-login ion-button {
+      margin-top: 0.8rem;
+      font-weight: 600;
+    }
+  }
+
+  .signup-link {
+    margin-top: 1.5rem;
+    text-align: center;
+    color: #fff;
+
+    ion-button {
+      font-weight: 700;
+    }
+  }
+}

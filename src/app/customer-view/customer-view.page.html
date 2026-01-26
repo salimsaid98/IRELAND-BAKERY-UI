@@ -1,0 +1,151 @@
+<ion-header [translucent]="true">
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/auth/customer_list"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Customer Details</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="editCustomer()">
+        <ion-icon name="pencil" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <!-- Customer Header Card -->
+  <ion-card class="customer-header-card">
+    <div class="customer-header-bg"></div>
+    <div class="customer-profile">
+      <div class="profile-avatar">
+        {{ customer.customer_name ? customer.customer_name.charAt(0).toUpperCase() : '' }}
+      </div>
+      <div class="profile-info">
+        <h1 class="customer-name-header">{{ customer.customer_name}}</h1>
+        <p class="customer-id">ID: {{ customer.customer_id }}</p>
+      </div>
+    </div>
+  </ion-card>
+
+  <!-- Quick Stats -->
+  <ion-grid class="stats-grid">
+    <ion-row>
+      <ion-col size="6">
+        <ion-card class="stat-card">
+          <ion-card-content>
+            <div class="stat-value">{{ currentbalance | currency:'TZS':'':'1.0-0' }} TZS</div>
+             <!-- <p class="customer-meta" *ngIf="customer.customer_balance !== undefined">
+              Balance: {{ customer.customer_balance | currency:'TZS':'':'1.0-0' }} TZS
+            </p> -->
+            <div class="stat-label">Total Balance</div>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+      <ion-col size="6">
+        <ion-card class="stat-card">
+          <ion-card-content>
+            <div class="stat-value">{{ orders.length }}</div>
+            <div class="stat-label">Total Orders</div>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <!-- Contact Information -->
+  <ion-card class="info-card">
+    <ion-card-header>
+      <ion-card-title class="section-title">Contact Information</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <div class="info-item">
+        <ion-icon name="call" class="info-icon"></ion-icon>
+        <div class="info-content">
+          <p class="info-label">Phone</p>
+          <p class="info-value">{{ customer.customer_phone }}</p>
+        </div>
+      </div>
+      <div class="info-item" *ngIf="customer.customer_email">
+        <ion-icon name="mail" class="info-icon"></ion-icon>
+        <div class="info-content">
+          <p class="info-label">Email</p>
+          <p class="info-value">{{ customer.customer_email }}</p>
+        </div>
+      </div>
+      <div class="info-item" *ngIf="customer.customer_createdDate">
+        <ion-icon name="calendar" class="info-icon"></ion-icon>
+        <div class="info-content">
+          <p class="info-label">Member Since</p>
+          <p class="info-value">{{ customer.customer_createdDate | date: 'MMM dd, yyyy' }}</p>
+        </div>
+      </div>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- Action Buttons -->
+  <ion-grid class="action-buttons-grid">
+    <ion-row>
+      <ion-col size="6">
+        <ion-button expand="block" color="primary" (click)="receivePayment()">
+          <ion-icon name="card" slot="start"></ion-icon>
+          Receive Payment
+        </ion-button>
+      </ion-col>
+      <ion-col size="6">
+        <ion-button expand="block" color="success" (click)="viewPaymentHistory()">
+          <ion-icon name="document" slot="start"></ion-icon>
+          Payment History
+        </ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <!-- Orders List Section -->
+  <div class="orders-section">
+    <ion-card-header class="section-header">
+      <ion-card-title class="section-title">Order History</ion-card-title>
+      <ion-badge color="primary" *ngIf="orders.length > 0">{{ orders.length }}</ion-badge>
+    </ion-card-header>
+
+    <!-- Orders List -->
+    <div class="orders-container" *ngIf="orders.length > 0; else noOrders">
+      <ion-list class="orders-list">
+        <ion-item-group *ngFor="let order of orders; let i = index">
+          <ion-item class="order-item" [detail]="true" (click)="viewOrderDetails(order)" button="true">
+            <ion-label class="order-label">
+              <div class="order-header">
+                <h3 class="order-id">Order #{{ order.order_id }}</h3>
+                <span class="order-date">{{ order.order_date | date: 'MMM dd, yyyy' }}</span>
+              </div>
+              <div class="order-details">
+                <p class="order-items">Items: {{ order.items }} qty</p>
+                <p class="order-status" [ngClass]="'status-' + order.status">
+                  {{ order.status | uppercase }}
+                </p>
+              </div>
+            </ion-label>
+            <div class="order-amount" slot="end">
+              <div class="amount-value">{{ order.total_amount | currency:'TZS':'':'1.0-0' }} TZS</div>
+               <!-- Balance: {{ customer.customer_balance | currency:'TZS':'':'1.0-0' }} TZS -->
+            </div>
+          </ion-item>
+        </ion-item-group>
+      </ion-list>
+    </div>
+
+    <!-- Empty Orders State -->
+    <ng-template #noOrders>
+      <ion-card class="empty-orders-card">
+        <ion-card-content class="empty-content">
+          <ion-icon name="bag-outline" class="empty-icon"></ion-icon>
+          <h2>No Orders Yet</h2>
+          <p>This customer hasn't placed any orders. Click "New Order" to create one.</p>
+          <ion-button color="primary" (click)="createOrder()">
+            <ion-icon name="add-circle" slot="start"></ion-icon>
+            Create First Order
+          </ion-button>
+        </ion-card-content>
+      </ion-card>
+    </ng-template>
+  </div>
+</ion-content>

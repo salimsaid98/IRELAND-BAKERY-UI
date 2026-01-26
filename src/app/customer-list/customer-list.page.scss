@@ -1,0 +1,328 @@
+// Header Styling
+ion-toolbar {
+  --ion-background-color: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  
+  ion-title {
+    font-weight: 600;
+    font-size: 20px;
+  }
+}
+
+// Search Container
+.search-container {
+  padding: 16px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+// Search Bar Styling
+.search-bar {
+  --background: rgba(255, 255, 255, 0.95);
+  --placeholder-color: #999;
+  --color: #333;
+  --border-radius: 25px;
+  --padding-start: 16px;
+  --padding-end: 16px;
+  --icon-color: #667eea;
+  font-weight: 500;
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+  
+  ion-icon {
+    color: #667eea;
+  }
+  
+  &:focus {
+    box-shadow: 0 6px 16px rgba(102, 126, 234, 0.5);
+  }
+}
+
+// Add Customer Card Styling
+.add-customer-card {
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  margin: 16px;
+  
+  .card-title-custom {
+    color: #333;
+    font-weight: 600;
+    font-size: 18px;
+  }
+  
+  ion-card-header {
+    background: transparent;
+    border-bottom: 2px solid rgba(0, 0, 0, 0.1);
+  }
+}
+
+// Add Customer Form
+.add-customer-form {
+  gap: 12px;
+  
+  ion-item {
+    --background: white;
+    --border-radius: 8px;
+    margin-bottom: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    
+    ion-label {
+      color: #667eea;
+      font-weight: 500;
+    }
+    
+    ion-input {
+      --padding-start: 12px;
+      --padding-end: 12px;
+    }
+  }
+}
+
+// Add Button
+.add-btn-col {
+  display: flex;
+  align-items: flex-end;
+  
+  .add-btn {
+    --background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    --border-radius: 8px;
+    font-weight: 600;
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+    
+    &:hover:not([disabled]) {
+      box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+    }
+    
+    &[disabled] {
+      opacity: 0.6;
+    }
+  }
+}
+
+// Customers Container
+.customers-container {
+  padding-top: 16px;
+  padding-bottom: 32px;
+}
+
+// Customers List
+.customers-list {
+  background: transparent;
+  
+  ion-item-divider {
+    --background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    --color: white;
+    --padding-start: 16px;
+    font-weight: 600;
+    border-radius: 8px 8px 0 0;
+    margin: 0 16px 8px 16px;
+    
+    ion-label {
+      color: white;
+    }
+  }
+}
+
+// Customer Item
+.customer-item {
+  --background: white;
+  --border-radius: 8px;
+  margin: 0 16px 8px 16px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  border-left: 4px solid #667eea;
+  transition: all 0.3s ease;
+  
+  &:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    transform: translateY(-2px);
+  }
+  
+  .customer-label {
+    margin-left: 12px;
+  }
+}
+
+// Customer Avatar
+.customer-avatar {
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 50%;
+  
+  .avatar-placeholder {
+    color: white;
+    font-weight: 700;
+    font-size: 20px;
+    text-align: center;
+  }
+}
+
+// Customer Name
+.customer-name {
+  color: #333;
+  font-weight: 600;
+  font-size: 16px;
+  margin: 0;
+}
+
+// Customer Phone
+.customer-phone {
+  color: #667eea;
+  font-size: 14px;
+  margin: 4px 0 0 0;
+  font-weight: 500;
+}
+
+// Customer Meta
+.customer-meta {
+  color: #764ba2;
+  font-size: 13px;
+  margin: 4px 0 0 0;
+  font-weight: 500;
+}
+
+// Action Buttons
+.action-buttons {
+  ion-button {
+    --padding-start: 8px;
+    --padding-end: 8px;
+    margin: 0;
+    
+    ion-icon {
+      font-size: 20px;
+    }
+  }
+}
+
+// Empty State
+.empty-state-card {
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  border-radius: 12px;
+  margin: 64px 16px 32px 16px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  
+  .empty-state-content {
+    text-align: center;
+    padding: 48px 24px;
+    
+    .empty-icon {
+      margin-bottom: 24px;
+      
+      ion-icon {
+        font-size: 64px;
+        color: #667eea;
+      }
+    }
+    
+    h2 {
+      color: #333;
+      font-weight: 600;
+      font-size: 20px;
+      margin: 16px 0 8px 0;
+    }
+    
+    p {
+      color: #666;
+      font-size: 14px;
+      margin: 0;
+      line-height: 1.6;
+    }
+  }
+}
+
+// Loading State
+.loading-card {
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  border-radius: 12px;
+  margin: 64px 16px 32px 16px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  
+  .loading-content {
+    text-align: center;
+    padding: 48px 24px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    
+    ion-spinner {
+      --color: #667eea;
+    }
+    
+    p {
+      color: #667eea;
+      font-weight: 500;
+      margin: 0;
+    }
+  }
+}
+
+// Customer Count Badge
+.customer-count {
+  --padding-start: 8px;
+  --padding-end: 8px;
+  font-weight: 600;
+}
+
+// Responsive Design
+@media (max-width: 768px) {
+  .add-customer-card {
+    margin: 12px;
+  }
+  
+  .customer-item {
+    margin: 0 12px 8px 12px;
+  }
+  
+  ion-item-divider {
+    margin: 0 12px 8px 12px !important;
+  }
+}
+
+// Dark Mode Support
+@media (prefers-color-scheme: dark) {
+  .add-customer-card {
+    background: linear-gradient(135deg, #2a2e4a 0%, #3a3f52 100%);
+    
+    .card-title-custom {
+      color: #e0e0e0;
+    }
+  }
+  
+  .add-customer-form {
+    ion-item {
+      --background: #3a3f52;
+      
+      ion-label {
+        color: #667eea;
+      }
+      
+      ion-input {
+        --color: #e0e0e0;
+      }
+    }
+  }
+  
+  .customer-item {
+    --background: #3a3f52;
+    --color: #e0e0e0;
+    
+    .customer-name {
+      color: #e0e0e0;
+    }
+  }
+  
+  .empty-state-card,
+  .loading-card {
+    background: linear-gradient(135deg, #2a2e4a 0%, #3a3f52 100%);
+    
+    h2, p {
+      color: #e0e0e0;
+    }
+  }
+}

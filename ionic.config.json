@@ -1,0 +1,7 @@
+{
+  "name": "Airfox",
+  "integrations": {
+    "cordova": {}
+  },
+  "type": "angular-standalone"
+}
