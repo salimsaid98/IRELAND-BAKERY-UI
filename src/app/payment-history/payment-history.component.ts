@@ -7,6 +7,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { OrderServicesService } from '../services/order/order-services.service';
 import { CustomerServicesService } from '../services/customer/customer-services.service';
 import { PaymentServiceService } from '../services/payment/payment-service.service';
+import { AlertController } from '@ionic/angular';
+import { RolesServiseService } from '../services/roles/roles-servise.service';
 interface Customer {
   customer_id: string;
   customer_name: string;
@@ -34,6 +36,7 @@ interface Payment {
   notes: string;
   customer_id: string;
   app_user_id: string;
+  username: string;
 }
 @Component({
   selector: 'app-payment-history',
@@ -52,7 +55,8 @@ export class PaymentHistoryComponent  implements OnInit {
   
     constructor(private router: Router,private orderservice:OrderServicesService
       ,private customerservice:CustomerServicesService, private route: ActivatedRoute 
-      ,private paymentservice:PaymentServiceService
+      ,private paymentservice:PaymentServiceService, private alertController: AlertController,
+      private roles:RolesServiseService
     ) {
       // Get customer from navigation state
     
@@ -60,7 +64,7 @@ export class PaymentHistoryComponent  implements OnInit {
     }
   
     ngOnInit() {
-     
+      this.getRoles();
       this.getAllPaymentsByCustomerID(this.id);
       // this.getCurrentCurentBalance(this.customer.customer_id)
     }
@@ -87,18 +91,76 @@ export class PaymentHistoryComponent  implements OnInit {
     createOrder() {
       this.router.navigate(['/auth/home']);
     }
-  
-    viewOrderDetails(payment: Payment) {
-      // this.router.navigate(['/auth/order_details'], { 
-      //   state: { order: payment, customer: this.customer } 
-      console.log("view payment details",payment);
-      // });
+    viewPaymentDetails(payment: Payment) {
+    
     }
+  
+ 
+
+  async deletePayment(payment: Payment) {
+  const alert = await this.alertController.create({
+    header: 'Delete Payment',
+    message: `Are you sure you want to delete this payment?`,
+    buttons: [
+      {
+        text: 'Cancel',
+        role: 'cancel'
+      },
+      {
+        text: 'Delete',
+        role: 'destructive',
+        handler: () => {
+          this.deletePaymentFunction(payment); // ✅ CALL DELETE
+        }
+      }
+    ]
+  });
+
+  await alert.present();
+}
+
+deletePaymentFunction(payment: Payment) {
+  this.paymentservice.deletePayment(payment.payment_id).subscribe({
+    next: async () => {
+      const alert = await this.alertController.create({
+        header: 'Success',
+        message: `Payment deleted successfully`,
+        buttons: ['OK']
+      });
+      await alert.present();
+
+      this.getAllPaymentsByCustomerID(this.id); // 🔄 refresh list
+    },
+    error: async () => {
+      const alert = await this.alertController.create({
+        header: 'Error',
+        message: 'Failed to delete payment',
+        buttons: ['OK']
+      });
+      await alert.present();
+    } 
+  });
+}
+      // t
    goBack() {
     const id = this.id;
     this.router.navigate(['/auth/customer_view',{ id}]); 
   }
    
+  role_name:any
+isAdmin : boolean = false;
+  getRoles(){
+    const userId = localStorage.getItem('app_user_id');
+    this.roles.getRoleNameByUserID(userId).subscribe(respo=>{
+      // console.log('User roles:', respo);
+      this.role_name=respo[0]?.name;
+      console.log("role name",this.role_name)
+
+      if(this.role_name === "Admin"){
+        this.isAdmin = true;
+      }
+    });
+  }
   
 }
 

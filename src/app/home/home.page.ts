@@ -234,7 +234,7 @@ proceedToCheckout(): void {
         description: product.description || '',  // Handle empty description
         price: product.selling_price || product.price,  // Use selling_price or fallback to price
         originalPrice: product.originalPrice,
-        image: 'http://localhost:8082' + product.image,  // Prepend base URL for full image path
+        image: 'http://192.168.1.100:8082' + product.image,  // Prepend base URL for full image path
         rating: product.rating,
         inStock: product.inStock,
         quantity: product.quantity || 0,  // Default quantity if missing

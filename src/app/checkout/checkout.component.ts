@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { IonicModule, IonModal, ToastController } from '@ionic/angular';
+import { IonicModule, IonModal, ToastController, LoadingController } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { addIcons } from 'ionicons';
 import { card, cash, person, add, checkmarkCircle, today } from 'ionicons/icons';
@@ -61,6 +61,7 @@ export class CheckoutComponent implements OnInit {
     private fb: FormBuilder,
     private router: Router,
     private toastController: ToastController,
+    private loadingController: LoadingController,
     private customerService: CustomerServicesService,
     private orderService: OrderServicesService,
     private orderItemsService: OrderItemsServicesService

@@ -17,6 +17,7 @@
       [(ngModel)]="searchText" 
       placeholder="🔍 Search by name or phone..."
       (ionInput)="filterCustomers()"
+      (ionClear)="filterCustomers()"
       class="search-bar"
       debounce="300">
     </ion-searchbar>
@@ -79,9 +80,9 @@
   </ion-card> -->
 
   <!-- Customers List -->
-  <div class="customers-container" *ngIf="filteredCustomers.length > 0; else noCustomers">
+  <div class="customers-container" *ngIf="!isLoading && filteredCustomers.length > 0; else noCustomersOrLoading">
     <ion-list class="customers-list">
-      <ion-item-group *ngFor="let customer of customers ; let i = index">
+      <ion-item-group *ngFor="let customer of filteredCustomers; let i = index">
         <ion-item-divider *ngIf="i === 0" sticky class="list-header">
           <ion-label><strong>Customer Directory</strong></ion-label>
         </ion-item-divider>
@@ -93,21 +94,18 @@
           <ion-label class="customer-label">
             <h2 class="customer-name">{{ customer.customer_name }}</h2>
             <p class="customer-phone">{{ customer.customer_phone }}</p>
-            <!-- <p class="customer-meta" *ngIf="customer.customer_balance !== undefined">
+            <p class="customer-meta" *ngIf="customer.customer_balance !== undefined">
               Balance: {{ customer.currentbalance| currency:'TZS':'':'1.0-0' }} TZS
-            </p> -->
-             <!-- <p class="customer-meta" *ngIf="customer.customer_balance !== undefined">
-              Owing: {{ customer.currentbalance | currency:'TZS':'':'1.0-0' }} TZS
-            </p> -->
+            </p>
           </ion-label>
           <ion-buttons slot="end" class="action-buttons">
-            <ion-button 
+            <ion-button  *ngIf="isAdmin"
               fill="clear" 
               color="primary"
               (click)="editCustomer(customer); $event.stopPropagation()">edit
               <ion-icon name="pencil-outline"></ion-icon>
             </ion-button>
-            <ion-button 
+            <ion-button *ngIf="isAdmin"
               fill="clear" 
               color="danger"
               (click)="deleteCustomer(customer); $event.stopPropagation()">
@@ -118,6 +116,16 @@
       </ion-item-group>
     </ion-list>
   </div>
+
+  <!-- Loading or Empty State -->
+  <ng-template #noCustomersOrLoading>
+    <ng-container *ngIf="isLoading; else noCustomers">
+      <div class="loading-wrapper">
+        <ion-spinner name="crescent"></ion-spinner>
+        <p>Loading customers...</p>
+      </div>
+    </ng-container>
+  </ng-template>
 
   <!-- Empty State -->
   <ng-template #noCustomers>
@@ -131,14 +139,6 @@
       </ion-card-content>
     </ion-card>
   </ng-template>
-
-  <!-- Loading State -->
-  <ion-card *ngIf="isLoading" class="loading-card">
-    <ion-card-content class="loading-content">
-      <ion-spinner name="circular"></ion-spinner>
-      <p>Loading customers...</p>
-    </ion-card-content>
-  </ion-card>
 </ion-content>
 
 

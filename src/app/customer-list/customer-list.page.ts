@@ -31,6 +31,7 @@ import {
 import { AlertController } from '@ionic/angular';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CustomerServicesService } from '../services/customer/customer-services.service';
+import { RolesServiseService } from '../services/roles/roles-servise.service';
 
 interface Customer {
   customer_id: string;
@@ -106,13 +107,14 @@ export class CustomerListPage implements OnInit {
     private alertController: AlertController,
     private router: Router,
     private customerService: CustomerServicesService,
-    private route:ActivatedRoute
+    private route:ActivatedRoute,private roles :RolesServiseService
     
   ) { }
 
   ngOnInit() {
     this.loadCustomers();
      this.id = this.route.snapshot.params['id'];
+    this.getRoles();
   }
 
   ionViewWillEnter() {
@@ -126,6 +128,7 @@ export class CustomerListPage implements OnInit {
 
  
 }
+
 Data:any
   loadCustomers() {
     this.isLoading = true;
@@ -262,4 +265,18 @@ async showToast(message: string) {
   //   });
   //   await alert.present();
   // }
+role_name:any
+isAdmin : boolean = false;
+  getRoles(){
+    const userId = localStorage.getItem('app_user_id');
+    this.roles.getRoleNameByUserID(userId).subscribe(respo=>{
+      // console.log('User roles:', respo);
+      this.role_name=respo[0]?.name;
+      console.log("role name",this.role_name)
+
+      if(this.role_name === "Admin"){
+        this.isAdmin = true;
+      }
+    });
+  }
 }

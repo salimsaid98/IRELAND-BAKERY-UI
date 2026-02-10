@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, FormsModule, Validators, ReactiveFormsModule } from '@angular/forms';
 import { IonContent, IonHeader, IonTitle, IonToolbar } from '@ionic/angular/standalone';
-import {  IonModal, ToastController } from '@ionic/angular';
+import { IonModal, ToastController, LoadingController } from '@ionic/angular';
 
 import { IonicModule } from '@ionic/angular';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -25,6 +25,7 @@ interface Customer {
 })
 export class ReceivePaymentPage implements OnInit  {
 id: any;
+  isSaving: boolean = false;
   ngOnInit(): void {
     //Called after the constructor, initializing input properties, and the first call to ngOnChanges.
     //Add 'implements OnInit' to the class.
@@ -45,7 +46,7 @@ id: any;
   constructor(private fb: FormBuilder,
     private router: Router,
   private paymentService: PaymentServiceService,private customerservice:CustomerServicesService,
-private toastController: ToastController,private rout: ActivatedRoute) {
+private toastController: ToastController, private loadingController: LoadingController, private rout: ActivatedRoute) {
     this.id = this.rout.snapshot.params['id'];
 
      const navigation = this.router.getCurrentNavigation();
@@ -58,7 +59,8 @@ private toastController: ToastController,private rout: ActivatedRoute) {
       payment_date: [new Date().toISOString().split('T')[0]], // ✅ local date
       notes: [''],
       app_user_id:[localStorage.getItem('app_user_id')],
-      customer_id: [this.id]
+      customer_id: [this.id],
+      loader_seconds: [0]
     });
 
   }
@@ -71,29 +73,54 @@ private toastController: ToastController,private rout: ActivatedRoute) {
       console.log("customer by id",this.customer);
     });
   }
-savepayment(data:any){
+
+  async presentLoader(minDurationMs: number = 0) {
+    const start = Date.now();
+    const loading = await this.loadingController.create({
+      spinner: 'crescent',
+      message: 'Processing...',
+      backdropDismiss: false
+    });
+    await loading.present();
+
+    return {
+      dismiss: async () => {
+        const elapsed = Date.now() - start;
+        const remaining = minDurationMs - elapsed;
+        if (remaining > 0) {
+          await new Promise(res => setTimeout(res, remaining));
+        }
+        try { await loading.dismiss(); } catch (e) { }
+      }
+    };
+  }
+
+  async savepayment(data:any, minSeconds: number = 0){
+    const loader = await this.presentLoader(minSeconds * 1000);
+    this.isSaving = true;
     this.paymentService.createPayment(data).subscribe(
-      (response) => {
+      async (response) => {
         console.log('Payment created successfully:', response);
+        await loader.dismiss();
+        this.isSaving = false;
         this.showToast('Payment received successfully', 'success');
         this.customer.customer_id = response.customer_id;
-            const id = this.id
-           this.router.navigate(['/auth/customer_view',{id}]);
-            
-        // Optionally navigate to another page or show a success message
-        
+        const id = this.id;
+        this.paymentForm.reset();
+        this.router.navigate(['/auth/customer_view',{id}]);
       },
-      (error) => {
+      async (error) => {
         console.error('Error creating payment:', error);
+        await loader.dismiss();
+        this.isSaving = false;
         this.showToast('Failed to receive payment', 'danger');
       }
     );
   }
 
   submitPayment() {
-    // Implementation here
-    // console.log('Payment submitted:', this.paymentForm.value);
-    this.savepayment(this.paymentForm.value);
+    const seconds = Number(this.paymentForm.value.loader_seconds) || 0;
+    this.savepayment(this.paymentForm.value, seconds);
   }
 
 

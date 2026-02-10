@@ -118,7 +118,7 @@
                 <span class="order-date">{{ order.order_date | date: 'MMM dd, yyyy' }}</span>
               </div>
               <div class="order-details">
-                <p class="order-items">Items: {{ order.items }} qty</p>
+                <p class="order-items">Created by : {{ order.username }}</p>
                 <p class="order-status" [ngClass]="'status-' + order.status">
                   {{ order.status | uppercase }}
                 </p>

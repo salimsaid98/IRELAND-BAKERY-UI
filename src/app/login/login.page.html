@@ -28,7 +28,9 @@
 
         <!-- Login Button -->
         <ion-button expand="block" color="primary" (click)="login()" class="login-btn">
-          <span>Login</span>
+          <ion-spinner *ngIf="isSubmitting" name="crescent" slot="start"></ion-spinner>
+        <ion-icon *ngIf="!isSubmitting" name="checkmark-circle" slot="start"></ion-icon>
+        {{ isSubmitting ? 'login..' : 'Login' }}
         </ion-button>
 
         <!-- Forgot Password -->

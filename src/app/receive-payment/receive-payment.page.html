@@ -55,14 +55,20 @@
       </ion-textarea>
     </ion-item>
 
+    <!-- Optional: Loader Duration -->
+    <ion-item>
+      <ion-label position="floating">Loader seconds (optional)</ion-label>
+      <ion-input type="number" formControlName="loader_seconds" min="0" placeholder="0"></ion-input>
+    </ion-item>
+
     <!-- Submit Button -->
     <ion-button 
       expand="block" 
       color="primary"
       (click)="submitPayment()"
-      [disabled]="!paymentForm.valid"
+      [disabled]="!paymentForm.valid || isSaving"
       class="ion-margin-top">
-      Confirm Payment
+      {{ isSaving ? 'Saving...' : 'Confirm Payment' }}
     </ion-button>
 
     <ion-button 

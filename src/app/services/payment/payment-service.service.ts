@@ -27,11 +27,11 @@ private payment = environment.url + 'payments';
 //   );
 // }
 
-  // deleteCustomer(id:any){
-  //   return this.http.delete(
-  //   `${this.customer}/customer/delete/${id}`,
-  // );
-  // }
+  deletePayment(id:any){
+    return this.http.delete(
+    `${this.payment}/payment/delete/${id}`,
+  );
+  }
 
   createPayment(data:any):Observable<any>{
     return this.http.post(this.payment+"/Create_payment",data);

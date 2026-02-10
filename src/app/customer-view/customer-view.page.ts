@@ -40,6 +40,7 @@ interface Order {
   order_id: string;
   date: Date;
   items: number;
+  username: string;
   order_date: Date;
   total_amount: number;
   status: 'pending' | 'completed' | 'cancelled';

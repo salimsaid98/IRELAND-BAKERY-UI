@@ -1,0 +1,109 @@
+<ion-header [translucent]="true">
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/auth/home"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Production Entry</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="ion-padding">
+  <!-- Header Card -->
+  <ion-card class="header-card">
+    <ion-card-content>
+      <h1>Record Production</h1>
+      <p>Enter the production details for today's batch</p>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- Production Form -->
+  <form [formGroup]="productionForm" (ngSubmit)="submitProduction()" *ngIf="!isSubmitting">
+    
+    <!-- Product Selection Card -->
+    <ion-card class="form-card">
+      <ion-card-header>
+        <ion-card-title>Select Product</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-item>
+          <ion-label position="floating">Product</ion-label>
+          <ion-select formControlName="product_id" placeholder="Choose a product">
+            <ion-select-option *ngFor="let unit of productUnits" [value]="unit.product_id">
+              {{ unit.name }}
+            </ion-select-option>
+          </ion-select>
+          <ion-icon name="cube" slot="start" color="primary"></ion-icon>
+        </ion-item>
+        <ion-text color="danger" *ngIf="productionForm.get('product_id')?.invalid && productionForm.get('product_id')?.touched">
+          <p class="error-text">Product is required</p>
+        </ion-text>
+      </ion-card-content>
+    </ion-card>
+
+    <!-- Unit Measure Input Card -->
+    <ion-card class="form-card">
+      <ion-card-header>
+        <ion-card-title>Unit Measure</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-item>
+          <ion-label position="floating">Quantity</ion-label>
+          <ion-input 
+            type="number" 
+            formControlName="unit_measure"
+            placeholder="Enter quantity"
+            min="1">
+          </ion-input>
+          <ion-icon name="cube" slot="start" color="success"></ion-icon>
+        </ion-item>
+        <ion-text color="danger" *ngIf="productionForm.get('unit_measure')?.invalid && productionForm.get('unit_measure')?.touched">
+          <p class="error-text">Unit measure is required (minimum 1)</p>
+        </ion-text>
+      </ion-card-content>
+    </ion-card>
+
+    <!-- Summary Card -->
+    <ion-card class="summary-card" *ngIf="formDataComplete()">
+      <ion-card-header>
+        <ion-card-title>Production Summary</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <div class="summary-item">
+          <span class="label">Product:</span>
+          <span class="value">{{ getSelectedProductName() }}</span>
+        </div>
+        <div class="summary-item">
+          <span class="label">Quantity:</span>
+          <span class="value">{{ productionForm.value.unit_measure }}</span>
+        </div>
+        <div class="summary-item">
+          <span class="label">Total:</span>
+          <span class="value">{{ getTotal() }}</span>
+        </div>
+      </ion-card-content>
+    </ion-card>
+
+    <!-- Action Buttons -->
+    <div class="action-buttons">
+      <ion-button expand="block" fill="outline" (click)="resetForm()">
+        <ion-icon name="refresh" slot="start"></ion-icon>
+        Clear
+      </ion-button>
+      <ion-button 
+        expand="block" 
+        color="success"
+        type="submit"
+        [disabled]="productionForm.invalid || isSubmitting">
+        <ion-spinner *ngIf="isSubmitting" name="crescent" slot="start"></ion-spinner>
+        <ion-icon *ngIf="!isSubmitting" name="checkmark-circle" slot="start"></ion-icon>
+        {{ isSubmitting ? 'Submitting...' : 'Submit Production' }}
+      </ion-button>
+    </div>
+  </form>
+
+  <!-- Loading State -->
+  <div *ngIf="isSubmitting" class="loading-container">
+    <ion-spinner name="crescent"></ion-spinner>
+    <p>Processing production record...</p>
+  </div>
+</ion-content>

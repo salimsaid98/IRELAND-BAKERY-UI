@@ -155,8 +155,9 @@
       color="success"
       (click)="completeCheckout()"
       [disabled]="isProcessing || cartItems.length === 0">
-      <ion-icon name="checkmark-circle" slot="start"></ion-icon>
-      Complete Order
+      <ion-spinner *ngIf="isProcessing" name="crescent" slot="start"></ion-spinner>
+      <ion-icon *ngIf="!isProcessing" name="checkmark-circle" slot="start"></ion-icon>
+      {{ isProcessing ? 'Processing...' : 'Complete Order' }}
     </ion-button>
   </div>
 

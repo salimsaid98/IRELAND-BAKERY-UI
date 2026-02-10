@@ -13,6 +13,9 @@ import { PaymentHistoryComponent } from './payment-history/payment-history.compo
 import { OrderDetailsPage } from './order-details/order-details.component';
 import { OrderDetailsCashComponent } from './order-details-cash/order-details-cash.component';
 import { AuthGuard } from './auth.guard';
+import { ChiefHomeComponent } from './chief/chief-home/chief-home.component';
+import { ChiefProductionListComponent } from './chief/chief-production-list/chief-production-list.component';
+import { ChiefProductionViewComponent } from './chief/chief-production-view/chief-production-view.component';
 
 export const routes: Routes = [
 
@@ -46,7 +49,7 @@ export const routes: Routes = [
       { path: 'home', component: HomePage },
       { path: 'profile', component: ProfilePage },
       { path: 'history', component: HistoryPage },
-      { path: 'stock', component: StockPage },
+      { path: 'chief', component: ChiefHomeComponent},
 
       { path: 'customer_list', component: CustomerListPage },
       { path: 'customer_view', component: CustomerViewPage },
@@ -58,6 +61,8 @@ export const routes: Routes = [
 
       { path: 'edit_customer', component: EditCustomerComponent },
       { path: 'payment-history', component: PaymentHistoryComponent },
+      {path:'list_production',component:ChiefProductionListComponent},
+      {path:'chief_production_view',component:ChiefProductionViewComponent}
     ],
   },
 
