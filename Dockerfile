@@ -1,12 +1,18 @@
-FROM nginx:alpine
+FROM node:20
 
-# Remove default config
-RUN rm /etc/nginx/conf.d/default.conf
+WORKDIR /app
 
-# Copy our nginx config
-COPY nginx.conf /etc/nginx/conf.d/default.conf
+# Install Ionic CLI v7.x globally
+RUN npm install -g @ionic/cli@^7
 
-# Copy ionic build
-COPY www/ /usr/share/nginx/html/
+# Copy package files and install dependencies
+COPY package*.json ./
+RUN npm install
 
-EXPOSE 80
+# Copy all project files
+COPY . .
+
+EXPOSE 8100
+
+# Run dev server
+CMD ["ionic", "serve", "--host", "0.0.0.0", "--port", "8100", "--no-open"]
