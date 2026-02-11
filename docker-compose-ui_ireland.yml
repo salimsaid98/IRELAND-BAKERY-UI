@@ -1,15 +1,22 @@
-version: "3.9"
+ersion: "3.9"
 
 services:
   web:
     build: .
     container_name: airfox-web
     ports:
-      - "80:80"
-    
+      - "8100:8100"       # Expose Ionic dev server port
+    volumes:
+      - .:/app            # Mount project folder for live changes
+      - /app/node_modules # Keep node_modules inside container
     networks:
       - app-network
     restart: unless-stopped
-  networks:
-    app-network:
-      external: true
+    stdin_open: true
+    tty: true
+    command: >
+      npx ionic serve --host 0.0.0.0 --port 8100 --no-open
+
+networks:
+  app-network:
+    external: true
